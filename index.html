@@ -25,6 +25,10 @@
   td[lang-content="en"] { display: table-cell; }
   body.lang-mm td[lang-content="mm"] { display: table-cell; }
   body.lang-mm td[lang-content="en"] { display: none; }
+  div[lang-content="mm"] { display: none; }
+  div[lang-content="en"] { display: block; }
+  body.lang-mm div[lang-content="mm"] { display: block; }
+  body.lang-mm div[lang-content="en"] { display: none; }
 
   body.lang-mm p, body.lang-mm li, body.lang-mm td { line-height: 1.9; }
 
@@ -43,26 +47,84 @@
   .screen-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 6px; background: #0f172a; border: 1px solid #1e293b; color: #94a3b8; margin: 2px; }
   .timeline-line { position: absolute; left: 18px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #14b8a6, #6366f1, #f59e0b, #10b981); }
   .timeline-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; border: 2px solid #0f172a; }
+
+  /* TAB SYSTEM */
+  .tab-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 7px 18px; border-radius: 9999px; border: 1px solid #1e293b;
+    font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #0f172a; color: #94a3b8; transition: all 0.15s;
+  }
+  .tab-btn:hover { border-color: #334155; color: #e2e8f0; }
+  .tab-btn.active { color: #0a0f1a; border-color: transparent; }
+  .milestone-panel { display: none; }
+  .milestone-panel.active { display: block; }
+
+  /* DELIVERABLE ITEMS */
+  .deliverable-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 7px; }
+  .d-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: #0a0f1a; border: 1px solid #1e293b;
+    border-radius: 8px; padding: 9px 12px; font-size: 12px; font-weight: 500; color: #cbd5e1;
+    transition: border-color 0.15s;
+  }
+  .d-item:hover { border-color: #334155; }
+  .d-check {
+    width: 15px; height: 15px; border-radius: 50%;
+    background: #14b8a6; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center; font-size: 9px; color: #0a0f1a; font-weight: 800;
+  }
+  .dg-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #475569; margin: 14px 0 8px; }
+
+  /* PAYMENT CIRCLES */
+  .pay-timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+  .pay-item { position: relative; }
+  .pay-item:not(:last-child)::after {
+    content: ''; position: absolute; top: 27px; left: calc(50% + 28px);
+    right: calc(-50% + 28px); height: 1px; background: #1e293b;
+  }
+  .pay-inner { text-align: center; padding: 0 6px; }
+  .pay-circle {
+    width: 54px; height: 54px; border-radius: 50%; border: 2px solid #1e293b;
+    background: #0f172a; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px; font-size: 13px; font-weight: 800; transition: all 0.2s;
+  }
+  .pay-amount { font-size: 13px; font-weight: 700; }
+  .pay-label { font-size: 10px; color: #64748b; margin-top: 2px; }
+  .pay-when { font-size: 10px; color: #475569; margin-top: 3px; }
+
+  /* HANDOVER */
+  .handover-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .handover-item { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 16px 18px; display: flex; gap: 12px; }
+  .handover-num { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  .handover-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .handover-desc { font-size: 12px; color: #64748b; line-height: 1.65; }
+
+  @media (max-width: 640px) {
+    .pay-timeline { grid-template-columns: repeat(2,1fr); gap: 12px; }
+    .pay-item::after { display: none; }
+    .handover-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body class="bg-slate-950 text-slate-200 antialiased">
 
 <!-- NAV -->
 <nav class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md fixed w-full z-50">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
     <div class="flex items-center gap-3">
       <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center font-bold text-slate-950 text-xl select-none">Ω</div>
       <span class="text-xl font-extrabold tracking-tight">NextGen <span class="text-teal-400">iGaming</span></span>
       <span class="badge bg-teal-900/40 text-teal-400 border border-teal-500/20 hidden sm:inline-flex">
-        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span> Confidential
+        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span> Proposal
       </span>
     </div>
     <div class="flex items-center gap-5">
       <div class="hidden md:flex space-x-5 text-sm font-medium text-slate-400">
         <a href="#scope"     class="hover:text-teal-400 transition-colors"><span lang-content="en">Scope</span><span lang-content="mm">Scope</span></a>
         <a href="#milestone" class="hover:text-teal-400 transition-colors"><span lang-content="en">Milestones</span><span lang-content="mm">အဆင့်</span></a>
-        <a href="#timeline"  class="hover:text-teal-400 transition-colors"><span lang-content="en">Timeline</span><span lang-content="mm">အချိန်ဇယား</span></a>
-        <a href="#infra"     class="hover:text-teal-400 transition-colors"><span lang-content="en">Infrastructure</span><span lang-content="mm">ဆာဗာ</span></a>
+        <a href="#payment"   class="hover:text-teal-400 transition-colors"><span lang-content="en">Payment</span><span lang-content="mm">ငွေပေးချေမှု</span></a>
+        <a href="#infra"     class="hover:text-teal-400 transition-colors"><span lang-content="en">Server</span><span lang-content="mm">ဆာဗာ</span></a>
         <a href="#handover"  class="hover:text-teal-400 transition-colors"><span lang-content="en">Handover</span><span lang-content="mm">လွှဲပြောင်း</span></a>
       </div>
       <div class="lang-toggle">
@@ -73,7 +135,7 @@
   </div>
 </nav>
 
-<main class="pt-32 pb-24 max-w-6xl mx-auto px-6 space-y-28">
+<main class="pt-32 pb-24 max-w-5xl mx-auto px-6 space-y-24">
 
   <!-- HERO -->
   <section class="text-center space-y-6">
@@ -88,11 +150,11 @@
     </h1>
     <p class="text-slate-400 max-w-2xl mx-auto text-base leading-relaxed">
       <span lang-content="en">Custom payment verification, Agent system, full Admin panel — production-ready in 24 weeks.</span>
-      <span lang-content="mm">iGaming platform။ Custom payment verification၊ Agent system၊ Admin panel အပြည့်အစုံ — ၂၄ ပတ်အတွင်း Production-ready ဖြစ်မည်။</span>
+      <span lang-content="mm">Custom payment verification၊ Agent system၊ Admin panel အပြည့်အစုံ — ၂၄ ပတ်အတွင်း Production-ready ဖြစ်မည်။</span>
     </p>
     <div class="flex flex-wrap justify-center gap-2 pt-1">
       <span class="tech-tag">NestJS</span>
-      <span class="tech-tag">Next.js (Web)</span>
+      <span class="tech-tag">Next.js</span>
       <span class="tech-tag">MongoDB</span>
       <span class="tech-tag">Redis</span>
       <span class="tech-tag">Custom Wallet</span>
@@ -102,27 +164,24 @@
     </div>
 
     <!-- Key numbers -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 text-left">
+    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mt-8 text-left">
       <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest">
-          <span lang-content="en">Duration</span><span lang-content="mm">ကြာချိန်</span>
-        </p>
+        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest"><span lang-content="en">Duration</span><span lang-content="mm">ကြာချိန်</span></p>
         <p class="text-3xl font-extrabold text-white">24 <span class="text-base font-normal text-slate-400"><span lang-content="en">weeks</span><span lang-content="mm">ပတ်</span></span></p>
         <p class="text-xs text-teal-400 mt-1"><span lang-content="en">≈ 6 months</span><span lang-content="mm">၆ လ ခန့်</span></p>
       </div>
-
       <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest">
-          <span lang-content="en">Total Fee</span><span lang-content="mm">ကုန်ကျစရိတ်</span>
-        </p>
+        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest"><span lang-content="en">Total Fee</span><span lang-content="mm">ကုန်ကျစရိတ်</span></p>
         <p class="text-3xl font-extrabold text-teal-400">700 <span class="text-base font-normal text-slate-400"><span lang-content="en">Lakhs</span><span lang-content="mm">သိန်း</span></span></p>
         <p class="text-xs text-slate-500 mt-1"><span lang-content="en">4 milestones</span><span lang-content="mm">၄ အဆင့်</span></p>
       </div>
-
       <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800">
-        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest">
-          <span lang-content="en">Platform</span><span lang-content="mm">ပလက်ဖောင်း</span>
-        </p>
+        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest"><span lang-content="en">Screens</span><span lang-content="mm">Screen</span></p>
+        <p class="text-3xl font-extrabold text-white">40+</p>
+        <p class="text-xs text-teal-400 mt-1"><span lang-content="en">Admin · Agent · User</span><span lang-content="mm">Admin · Agent · User</span></p>
+      </div>
+      <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800">
+        <p class="text-xs text-slate-500 mb-1 uppercase tracking-widest"><span lang-content="en">Platform</span><span lang-content="mm">ပလက်ဖောင်း</span></p>
         <p class="text-3xl font-extrabold text-white"><span lang-content="en">Web</span><span lang-content="mm">ဝဘ်</span></p>
         <p class="text-xs text-teal-400 mt-1"><span lang-content="en">WebView-ready</span><span lang-content="mm">WebView သုံးနိုင်</span></p>
       </div>
@@ -138,15 +197,10 @@
           <span lang-content="en">What We're Building — Full Screen Scope</span>
           <span lang-content="mm">တည်ဆောက်မည့် Screen စာရင်း အပြည့်အစုံ</span>
         </h2>
-        <!-- <p class="text-xs text-slate-500 mt-1">
-          <span lang-content="en">Agreed scope as of the latest revision. Web-first, custom payment, no biometric, Viber link support.</span>
-          <span lang-content="mm">နောက်ဆုံး ပြင်ဆင်မှုအရ သဘောတူထားသည့် Scope။ Web-first၊ Custom payment၊ Biometric မပါ၊ Viber link ပါသည်။</span>
-        </p> -->
       </div>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
-
       <!-- Admin -->
       <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6">
         <div class="flex items-center gap-2 mb-4">
@@ -165,7 +219,7 @@
             <span class="screen-pill">Net GGR</span>
             <span class="screen-pill">Server Status</span>
           </div>
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2">User & Agent</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2"><span lang-content="en">User & Agent</span><span lang-content="mm">User & Agent</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Agent List & Create</span>
             <span class="screen-pill">Commission Rate</span>
@@ -178,7 +232,7 @@
             <span class="screen-pill">Withdraw Approval</span>
             <span class="screen-pill">Payment Method Mgmt</span>
           </div>
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2">Other</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2"><span lang-content="en">Other</span><span lang-content="mm">အခြား</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Game Provider On/Off</span>
             <span class="screen-pill">Banner & Notice</span>
@@ -205,13 +259,13 @@
             <span class="screen-pill">Total Balance</span>
             <span class="screen-pill">Daily Summary</span>
           </div>
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2">User Management</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2"><span lang-content="en">User Management</span><span lang-content="mm">User စီမံမှု</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Create User</span>
             <span class="screen-pill">User List + Status</span>
             <span class="screen-pill">Lock / Unlock</span>
           </div>
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2">Transactions</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2"><span lang-content="en">Transactions</span><span lang-content="mm">ငွေလွှဲမှု</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Deposit to User</span>
             <span class="screen-pill">Withdraw from User</span>
@@ -236,12 +290,12 @@
           <span lang-content="mm">ကစားသမားများ မြင်သည့် Web app။ နောင်တွင် Mobile WebView ထဲ ထည့်နိုင်အောင် ဒီဇိုင်းဆွဲမည်။</span>
         </p>
         <div class="space-y-2 text-xs text-slate-400">
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mb-2">Auth</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mb-2"><span lang-content="en">Auth</span><span lang-content="mm">အကောင့်ဝင်မှု</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Login / Register</span>
             <span class="screen-pill">OTP Verify</span>
           </div>
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2">Home</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2"><span lang-content="en">Home</span><span lang-content="mm">ပင်မစာမျက်နှာ</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Banner Carousel</span>
             <span class="screen-pill">Game Categories</span>
@@ -253,7 +307,7 @@
             <span class="screen-pill">In-Game WebView</span>
             <span class="screen-pill">Bet History</span>
           </div>
-          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2">Wallet & Profile</p>
+          <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] mt-3 mb-2"><span lang-content="en">Wallet & Profile</span><span lang-content="mm">Wallet & ပရိုဖိုင်</span></p>
           <div class="flex flex-wrap gap-1">
             <span class="screen-pill">Deposit (last 5 digits)</span>
             <span class="screen-pill">Withdraw</span>
@@ -262,323 +316,345 @@
           </div>
         </div>
       </div>
-
     </div>
-
-    <!-- What's NOT in scope -->
-    <!-- <div class="note-box mt-6">
-      <h4 class="text-sm font-bold text-amber-400 mb-3">
-        <span lang-content="en">⚠ Agreed exclusions (v2 backlog)</span>
-        <span lang-content="mm">⚠ ဒီ version မပါသည့် အချက်များ (v2 မှာ ထည့်မည်)</span>
-      </h4>
-      <div class="flex flex-wrap gap-2">
-        <span class="screen-pill text-rose-400 border-rose-900">Biometric Login</span>
-        <span class="screen-pill text-rose-400 border-rose-900">Native Mobile App</span>
-        <span class="screen-pill text-rose-400 border-rose-900">Banking API Auto-verify</span>
-        <span class="screen-pill text-rose-400 border-rose-900">Promotion / Bonus Engine</span>
-        <span class="screen-pill text-rose-400 border-rose-900">Advanced Analytics Dashboard</span>
-      </div>
-      <p class="text-xs text-slate-500 mt-3">
-        <span lang-content="en">Live chat → Viber deep link only (one tap opens customer's Viber to preset number). Full live chat integration is v2.</span>
-        <span lang-content="mm">Live Chat → Viber deep link တစ်ကြောင်းပဲ (နှိပ်တာနဲ့ သတ်မှတ်ထားတဲ့ ဖုန်းနံပါတ် Viber ကိုတန်းပွင့်မည်)။ Full live chat သည် v2 ဖြစ်သည်။</span>
-      </p>
-    </div> -->
   </section>
 
-  <!-- MILESTONE PAYMENTS -->
+  <!-- MILESTONE INTERACTIVE -->
   <section id="milestone">
-    <div class="flex items-center gap-3 mb-8">
+    <div class="flex items-center gap-3 mb-6">
       <div class="section-bar bg-teal-500"></div>
       <div>
         <h2 class="text-2xl font-bold text-white">
-          <span lang-content="en">Milestone Payments</span>
-          <span lang-content="mm">အပိုင်းလိုက် ပေးချေမှု အစီအစဉ်</span>
+          <span lang-content="en">Milestone Deliverables — Interactive</span>
+          <span lang-content="mm">Milestone တစ်ခုချင်း ရရှိမည့် အရာများ</span>
         </h2>
         <p class="text-xs text-slate-500 mt-1">
-          <span lang-content="en">4 milestones across 24 weeks (≈ 6 months). Each milestone unlocks payment upon verified delivery.</span>
-          <span lang-content="mm">၂၄ ပတ် (၆ လ ခန့်) တွင် Milestone ၄ ခု။ တစ်ခုချင်းပြီးစီးမှ နောက်တစ်ဆင့် ငွေပေးချေနိုင်သည်။</span>
+          <span lang-content="en">Click each milestone to see exactly what is built and handed to you</span>
+          <span lang-content="mm">Milestone တစ်ခုချင်းနှိပ်၍ ဘာတွေ ရမည်ကို စစ်ဆေးနိုင်သည်</span>
         </p>
       </div>
     </div>
 
-    <div class="rounded-2xl border border-slate-800 overflow-hidden">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="bg-slate-900 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-800">
-            <th class="px-5 py-4 w-36"><span lang-content="en">Milestone</span><span lang-content="mm">အဆင့်</span></th>
-            <th class="px-5 py-4"><span lang-content="en">Deliverables & Screens</span><span lang-content="mm">ပြီးစီးရမည့် Screen & Feature</span></th>
-            <th class="px-5 py-4 text-center w-20">%</th>
-            <th class="px-5 py-4 text-right w-44"><span lang-content="en">Fee</span><span lang-content="mm">ငွေပမာဏ</span></th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-800/60">
-
-          <!-- M1 -->
-          <tr class="milestone-row">
-            <td class="px-5 py-5 align-top">
-              <span class="text-teal-400 font-bold text-sm block">Milestone 1</span>
-              <span class="text-slate-500 text-xs">
-                <span lang-content="en">Weeks 1–5</span>
-                <span lang-content="mm">ပတ် ၁–၅</span>
-              </span>
-            </td>
-            <td class="px-5 py-5">
-              <p class="font-bold text-white mb-1">
-                <span lang-content="en">Foundation — Architecture, Auth & DB</span>
-                <span lang-content="mm">Foundation — Architecture, Auth & Database</span>
-              </p>
-              <p class="text-sm text-slate-400 leading-relaxed mb-3">
-                <span lang-content="en">Contract signed, servers provisioned, codebase initialized. Core auth system, role system, and all database schemas delivered and tested.</span>
-                <span lang-content="mm">စာချုပ်ချုပ်ဆိုပြီး server တပ်ဆင်ကာ codebase စတင်ပါသည်။ Auth system၊ Role system နှင့် Database schema အားလုံး ပြီးစြမ်းပြီး စမ်းသပ်မည်။</span>
-              </p>
-              <div class="flex flex-wrap gap-1">
-                <span class="screen-pill text-teal-400 border-teal-900">NestJS + Next.js base</span>
-                <span class="screen-pill text-teal-400 border-teal-900">MongoDB schema (all tables)</span>
-                <span class="screen-pill text-teal-400 border-teal-900">Login / Register + OTP screen</span>
-                <span class="screen-pill text-teal-400 border-teal-900">JWT + Role guard (Admin/Agent/User)</span>
-                <span class="screen-pill text-teal-400 border-teal-900">CI/CD pipeline</span>
-                <span class="screen-pill text-teal-400 border-teal-900">Cloud server live</span>
-              </div>
-            </td>
-            <td class="px-5 py-5 text-center font-semibold text-slate-400 align-top">20%</td>
-            <td class="px-5 py-5 text-right align-top">
-              <span class="font-bold text-white block">
-                <span lang-content="en">150 Lakhs</span>
-                <span lang-content="mm">၁၅၀ သိန်းကျပ်</span>
-              </span>
-              <span class="text-xs text-slate-500"><span lang-content="en">Upfront to start</span><span lang-content="mm">စတင်ရန်</span></span>
-            </td>
-          </tr>
-
-          <!-- M2 -->
-          <tr class="milestone-row">
-            <td class="px-5 py-5 align-top">
-              <span class="text-indigo-400 font-bold text-sm block">Milestone 2</span>
-              <span class="text-slate-500 text-xs">
-                <span lang-content="en">Weeks 6–11</span>
-                <span lang-content="mm">ပတ် ၆–၁၁</span>
-              </span>
-            </td>
-            <td class="px-5 py-5">
-              <p class="font-bold text-white mb-1">
-                <span lang-content="en">Admin + Agent Panel — Full Functionality</span>
-                <span lang-content="mm">Admin + Agent Panel — အပြည့်အဝ လုပ်ဆောင်ချက်</span>
-              </p>
-              <p class="text-sm text-slate-400 leading-relaxed mb-3">
-                <span lang-content="en">Both admin and agent panels working end-to-end. You can create agents, manage users, view reports, and transfer points before a single user touches the platform.</span>
-                <span lang-content="mm">Admin နှင့် Agent panel နှစ်ခုလုံး အဆုံးထိ အလုပ်လုပ်နေမည်။ User တစ်ယောက်မ ဝင်မချင်းတောင် Agent ဖွင့်ခြင်း၊ User စီမံခြင်း၊ Report ကြည့်ခြင်း နှင့် Point လွှဲခြင်း ပြုလုပ်နိုင်မည်။</span>
-              </p>
-              <div class="flex flex-wrap gap-1">
-                <span class="screen-pill text-indigo-400 border-indigo-900">Admin Dashboard (GGR, users)</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Agent create + commission rate</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">User list + lock/unlock</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Agent dashboard</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Sub-user create</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Deposit/withdraw to user</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Transfer history</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Win/Loss report</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Commission history</span>
-                <span class="screen-pill text-indigo-400 border-indigo-900">Audit logs (basic)</span>
-              </div>
-            </td>
-            <td class="px-5 py-5 text-center font-semibold text-slate-400 align-top">25%</td>
-            <td class="px-5 py-5 text-right align-top">
-              <span class="font-bold text-white block">
-                <span lang-content="en">170 Lakhs</span>
-                <span lang-content="mm">၁၇၀ သိန်းကျပ်</span>
-              </span>
-              <span class="text-xs text-slate-500"><span lang-content="en">On delivery</span><span lang-content="mm">ပြီးစီးမှ</span></span>
-            </td>
-          </tr>
-
-          <!-- M3 -->
-          <tr class="milestone-row">
-            <td class="px-5 py-5 align-top">
-              <span class="text-amber-400 font-bold text-sm block">Milestone 3</span>
-              <span class="text-slate-500 text-xs">
-                <span lang-content="en">Weeks 12–18</span>
-                <span lang-content="mm">ပတ် ၁၂–၁၈</span>
-              </span>
-            </td>
-            <td class="px-5 py-5">
-              <p class="font-bold text-white mb-1">
-                <span lang-content="en">Payment System + User Web App + Game Integration</span>
-                <span lang-content="mm">Payment + User Web App + ဂိမ်း ချိတ်ဆက်မှု</span>
-              </p>
-              <p class="text-sm text-slate-400 leading-relaxed mb-3">
-                <span lang-content="en">The platform becomes fully playable. Custom deposit (last 5 digits verification), withdrawal flow, wallet engine, game lobby, and in-game WebView — all live and tested.</span>
-                <span lang-content="mm">Platform ကစားနိုင်သော အဆင့်သို့ ရောက်မည်။ Custom ငွေသွင်းစနစ် (နောက်ဆုံး ၅ လုံးစစ်ဆေး)၊ ငွေထုတ်၊ Wallet engine၊ Game lobby နှင့် In-game WebView — အားလုံး Live ဖြစ်ကာ Test ပြီးပါမည်။</span>
-              </p>
-              <div class="flex flex-wrap gap-1">
-                <span class="screen-pill text-amber-400 border-amber-900">Wallet engine (atomic)</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Deposit (last 5 digits verify)</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Pending → Approve / Reject</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Withdraw request flow</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Tx history (Pending/Success/Failed)</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Payment method on/off</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Home screen (banner, categories, balance)</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Game lobby + provider filter</span>
-                <span class="screen-pill text-amber-400 border-amber-900">In-game WebView</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Bet history</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Profile + Viber CS link</span>
-                <span class="screen-pill text-amber-400 border-amber-900">Game provider API (Aggregator)</span>
-              </div>
-            </td>
-            <td class="px-5 py-5 text-center font-semibold text-slate-400 align-top">30%</td>
-            <td class="px-5 py-5 text-right align-top">
-              <span class="font-bold text-white block">
-                <span lang-content="en">210 Lakhs</span>
-                <span lang-content="mm">၂၁၀ သိန်းကျပ်</span>
-              </span>
-              <span class="text-xs text-slate-500"><span lang-content="en">Heaviest phase</span><span lang-content="mm">အများဆုံး phase</span></span>
-            </td>
-          </tr>
-
-          <!-- M4 -->
-          <tr class="milestone-row">
-            <td class="px-5 py-5 align-top">
-              <span class="text-emerald-400 font-bold text-sm block">Milestone 4</span>
-              <span class="text-slate-500 text-xs">
-                <span lang-content="en">Weeks 19–24</span>
-                <span lang-content="mm">ပတ် ၁၉–၂၄</span>
-              </span>
-            </td>
-            <td class="px-5 py-5">
-              <p class="font-bold text-white mb-1">
-                <span lang-content="en">Security, QA & Production Launch</span>
-                <span lang-content="mm">လုံခြုံရေး၊ QA နှင့် Production မွေးထုတ်မှု</span>
-              </p>
-              <p class="text-sm text-slate-400 leading-relaxed mb-3">
-                <span lang-content="en">Full security audit, load testing, UAT, banner management, and official go-live. Includes 3-week post-launch monitoring buffer.</span>
-                <span lang-content="mm">Security audit အပြည့်၊ Load testing၊ UAT၊ Banner စီမံမှု နှင့် တရားဝင် Go-live။ Launch ပြီးနောက် ၃ ပတ် monitoring buffer ပါဝင်သည်။</span>
-              </p>
-              <div class="flex flex-wrap gap-1">
-                <span class="screen-pill text-emerald-400 border-emerald-900">Banner & Notice mgmt</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">P/L monthly reports</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">Security audit + rate limiting</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">XSS / SQLi hardening</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">Load testing (concurrent users)</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">UAT sign-off</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">Production deploy</span>
-                <span class="screen-pill text-emerald-400 border-emerald-900">3-week post-launch monitoring</span>
-              </div>
-            </td>
-            <td class="px-5 py-5 text-center font-semibold text-slate-400 align-top">25%</td>
-            <td class="px-5 py-5 text-right align-top">
-              <span class="font-bold text-white block">
-                <span lang-content="en">170 Lakhs</span>
-                <span lang-content="mm">၁၇၀ သိန်းကျပ်</span>
-              </span>
-              <span class="text-xs text-slate-500"><span lang-content="en">On go-live</span><span lang-content="mm">Launch ဖြစ်မှ</span></span>
-            </td>
-          </tr>
-
-          <!-- Total -->
-          <tr class="bg-slate-900/80">
-            <td colspan="2" class="px-5 py-4 text-right text-slate-400 font-semibold text-sm">
-              <span lang-content="en">Total Project Fee</span>
-              <span lang-content="mm">စုစုပေါင်း ကုန်ကျစရိတ်</span>
-            </td>
-            <td class="px-5 py-4 text-center font-bold text-teal-400">100%</td>
-            <td class="px-5 py-4 text-right font-extrabold text-teal-400 text-lg">
-              <span lang-content="en">700 Lakhs</span>
-              <span lang-content="mm">၇၀၀ သိန်းကျပ်</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="tab-row">
+      <button class="tab-btn active" style="background:#14b8a6;color:#0a0f1a;border-color:#14b8a6" onclick="showTab(1,this)">
+        <span lang-content="en">M1 · Foundation</span>
+        <span lang-content="mm">M1 · အခြေခံ</span>
+      </button>
+      <button class="tab-btn" onclick="showTab(2,this)">
+        <span lang-content="en">M2 · Admin & Agent</span>
+        <span lang-content="mm">M2 · Admin & Agent</span>
+      </button>
+      <button class="tab-btn" onclick="showTab(3,this)">
+        <span lang-content="en">M3 · Payment & Games</span>
+        <span lang-content="mm">M3 · ငွေပေးချေ & ဂိမ်း</span>
+      </button>
+      <button class="tab-btn" onclick="showTab(4,this)">
+        <span lang-content="en">M4 · Launch & QA</span>
+        <span lang-content="mm">M4 · Launch & QA</span>
+      </button>
     </div>
 
-    <div class="note-box mt-4">
-      <p class="text-xs text-slate-400 leading-relaxed">
-        <span lang-content="en">⚠ Milestone 3 is the longest and most critical phase. Payment engine bugs discovered after launch are extremely costly to fix. All wallet transactions will undergo atomic testing before M3 payment is released.</span>
-        <span lang-content="mm">⚠ Milestone 3 သည် အချိန်အများဆုံး ကြာပြီး အရေးကြီးဆုံး Phase ဖြစ်သည်။ Launch ပြီးမှ Payment bug တွေ့ပါက ပြင်ရလွန်းသည်။ M3 ငွေမပေးမချင်း Wallet transaction အားလုံးကို Atomic test ပြုလုပ်ပြီးမှ ဖြစ်မည်။</span>
-      </p>
+    <!-- M1 Panel -->
+    <div class="milestone-panel active bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden" id="panel-1">
+      <div class="p-6 border-b border-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="badge bg-teal-900/40 text-teal-400 border border-teal-500/20 mb-2">
+              <span lang-content="en">Milestone 1 · Weeks 1–5</span>
+              <span lang-content="mm">Milestone 1 · ပတ် ၁–၅</span>
+            </span>
+            <h3 class="text-lg font-bold text-white mt-2">
+              <span lang-content="en">Foundation — Architecture, Auth & Database</span>
+              <span lang-content="mm">Foundation — Architecture, Auth & Database</span>
+            </h3>
+            <p class="text-sm text-slate-400 mt-2 max-w-xl leading-relaxed">
+              <span lang-content="en">Contract signed, servers provisioned, codebase initialized. All database schemas, auth system, and role system delivered and tested. This is what every feature builds on top of.</span>
+              <span lang-content="mm">စာချုပ်ချုပ်ပြီး server တပ်ဆင်ကာ codebase စတင်ပါသည်။ Database schema အားလုံး၊ Auth system နှင့် Role system ပြီးစီးပြီး စမ်းသပ်မည်။ ဤအဆင့်သည် M2, M3, M4 တွင် ဆောက်တည်မည့် အခြေခံဖြစ်သည်။</span>
+            </p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="text-2xl font-extrabold text-teal-400">
+              <span lang-content="en">150 Lakhs</span>
+              <span lang-content="mm">၁၅၀ သိန်း</span>
+            </div>
+            <div class="text-xs text-slate-500 mt-1">20%</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="dg-label"><span lang-content="en">Backend & Infrastructure</span><span lang-content="mm">Backend & Infrastructure</span></div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">NestJS API scaffolded & live</span><span lang-content="mm">NestJS API စတင်ပြင်ဆင်မည်</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">MongoDB schema — all collections</span><span lang-content="mm">MongoDB schema — Collection အားလုံး</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Redis cache layer configured</span><span lang-content="mm">Redis cache layer ပြင်ဆင်မည်</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">JWT auth + refresh token</span><span lang-content="mm">JWT auth + refresh token</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Role guard (Admin / Agent / User)</span><span lang-content="mm">Role guard (Admin / Agent / User)</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">CI/CD pipeline on GitHub</span><span lang-content="mm">CI/CD pipeline GitHub တွင်</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Cloud server provisioned & live</span><span lang-content="mm">Cloud server တပ်ဆင်ပြီး Live ဖြစ်မည်</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Cloudflare WAF connected</span><span lang-content="mm">Cloudflare WAF ချိတ်ဆက်မည်</span></div>
+        </div>
+        <div class="dg-label"><span lang-content="en">Frontend Screens</span><span lang-content="mm">Frontend Screen များ</span></div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Login screen (all roles)</span><span lang-content="mm">Login screen (Role အားလုံး)</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Register screen</span><span lang-content="mm">Register screen</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">OTP verify screen</span><span lang-content="mm">OTP စစ်ဆေးမှု screen</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Next.js project base (WebView-ready)</span><span lang-content="mm">Next.js project base (WebView-ready)</span></div>
+        </div>
+        <div class="note-box mt-4">
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <span lang-content="en">⚡ <strong class="text-amber-400">What you verify at M1:</strong> Log in as Admin, Agent, and User from any browser. Database visible in MongoDB Atlas. CI/CD auto-deploys on every git push. All schemas finalized — no surprise columns later.</span>
+            <span lang-content="mm">⚡ <strong class="text-amber-400">M1 တွင် စစ်ဆေးနိုင်သည်:</strong> Browser မှ Admin, Agent, User အဖြစ် Login ဝင်နိုင်မည်။ MongoDB Atlas တွင် Database မြင်ရမည်။ CI/CD သည် git push တိုင်း auto-deploy ဖြစ်မည်။ Schema များ ပြီးဆုံးပြီ — နောက်မှ ထပ်ထည့်မည် မဟုတ်ပါ။</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- M2 Panel -->
+    <div class="milestone-panel bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden" id="panel-2">
+      <div class="p-6 border-b border-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="badge bg-indigo-900/40 text-indigo-400 border border-indigo-500/20 mb-2">
+              <span lang-content="en">Milestone 2 · Weeks 6–11</span>
+              <span lang-content="mm">Milestone 2 · ပတ် ၆–၁၁</span>
+            </span>
+            <h3 class="text-lg font-bold text-white mt-2">
+              <span lang-content="en">Admin + Agent Panel — Full Functionality</span>
+              <span lang-content="mm">Admin + Agent Panel — အပြည့်အဝ လုပ်ဆောင်ချက်</span>
+            </h3>
+            <p class="text-sm text-slate-400 mt-2 max-w-xl leading-relaxed">
+              <span lang-content="en">Both panels work end-to-end. Create agents, manage users, view reports, transfer points — before a single real player touches the platform.</span>
+              <span lang-content="mm">Panel နှစ်ခုလုံး အဆုံးထိ အလုပ်လုပ်မည်။ User တစ်ဦးမ ဝင်မချင်းတောင် Agent ဖွင့်ခြင်း၊ User စီမံခြင်း၊ Report ကြည့်ခြင်း နှင့် Point လွှဲခြင်း ပြုလုပ်နိုင်မည်။</span>
+            </p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="text-2xl font-extrabold text-indigo-400">
+              <span lang-content="en">170 Lakhs</span>
+              <span lang-content="mm">၁၇၀ သိန်း</span>
+            </div>
+            <div class="text-xs text-slate-500 mt-1">25%</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="dg-label">Admin Panel</div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Dashboard — GGR, users, server status</span><span lang-content="mm">Dashboard — GGR, User, Server status</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Agent list + create + commission rate</span><span lang-content="mm">Agent list + ဖွင့်ခြင်း + ကော်မရှင်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Global user list + lock / unlock</span><span lang-content="mm">User list အားလုံး + lock / unlock</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Deposit / Withdrawal approval queue</span><span lang-content="mm">ငွေသွင်း / ထုတ် အတည်ပြုဆောင်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Payment method on / off toggle</span><span lang-content="mm">ငွေပေးနည်း on / off ခလုတ်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Game provider on / off toggle</span><span lang-content="mm">Game provider on / off ခလုတ်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Audit logs</span><span lang-content="mm">Audit logs</span></div>
+        </div>
+        <div class="dg-label">Agent Panel</div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Agent dashboard — balance, daily summary</span><span lang-content="mm">Agent dashboard — ငွေကျန်, နေ့ချုပ်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Create sub-user with starting balance</span><span lang-content="mm">Sub-user ဖွင့်ပြီး ငွေကနဦး ထည့်မည်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">User list + lock / unlock</span><span lang-content="mm">User list + lock / unlock</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Deposit & withdraw to user</span><span lang-content="mm">User ထံ ငွေသွင်း / ထုတ်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Transfer history</span><span lang-content="mm">လွှဲပြောင်းမှတ်တမ်း</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Win / Loss report</span><span lang-content="mm">နိုင် / ရှုံး အစီရင်ခံ</span></div>
+          <div class="d-item"><div class="d-check" style="background:#818cf8">✓</div><span lang-content="en">Commission history</span><span lang-content="mm">ကော်မရှင်မှတ်တမ်း</span></div>
+        </div>
+        <div class="note-box mt-4">
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <span lang-content="en">⚡ <strong class="text-amber-400">What you verify at M2:</strong> Live demo — create an agent, set commission rate, create a player under that agent, deposit points, and watch the balance reflect instantly. All reports update in real time.</span>
+            <span lang-content="mm">⚡ <strong class="text-amber-400">M2 တွင် စစ်ဆေးနိုင်သည်:</strong> Live demo — Agent ဖွင့်၊ ကော်မရှင် သတ်မှတ်၊ ထိုAgent အောက် Player ဖွင့်၊ Point သွင်း ၊ Balance ချက်ချင်းပြောင်းသည်ကို ကြည့်နိုင်မည်။ Report အားလုံး Real-time ဖြစ်မည်။</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- M3 Panel -->
+    <div class="milestone-panel bg-slate-900 rounded-2xl border border-amber-800/30 overflow-hidden" id="panel-3">
+      <div class="p-6 border-b border-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="badge bg-amber-900/40 text-amber-400 border border-amber-500/20 mb-2">
+              <span lang-content="en">Milestone 3 · Weeks 12–18 · ⚠ Critical Phase</span>
+              <span lang-content="mm">Milestone 3 · ပတ် ၁၂–၁၈ · ⚠ အရေးကြီးဆုံး Phase</span>
+            </span>
+            <h3 class="text-lg font-bold text-white mt-2">
+              <span lang-content="en">Payment System + User Web App + Game Integration</span>
+              <span lang-content="mm">Payment + User Web App + ဂိမ်း ချိတ်ဆက်မှု</span>
+            </h3>
+            <p class="text-sm text-slate-400 mt-2 max-w-xl leading-relaxed">
+              <span lang-content="en">The platform becomes fully playable. Custom deposit (last 5 digits), withdrawal, wallet engine, game lobby, in-game WebView — all live and atomic-tested.</span>
+              <span lang-content="mm">Platform ကစားနိုင်သော အဆင့်သို့ ရောက်မည်။ Custom deposit (နောက်ဆုံး ၅ လုံး စစ်)၊ ငွေထုတ်၊ Wallet engine၊ Game lobby၊ In-game WebView — အားလုံး Live ဖြစ်ကာ Atomic test ပြီးမည်။</span>
+            </p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="text-2xl font-extrabold text-amber-400">
+              <span lang-content="en">210 Lakhs</span>
+              <span lang-content="mm">၂၁၀ သိန်း</span>
+            </div>
+            <div class="text-xs text-slate-500 mt-1">30%</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="dg-label"><span lang-content="en">Payment & Wallet Engine</span><span lang-content="mm">Payment & Wallet Engine</span></div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Atomic wallet engine (no double-spend)</span><span lang-content="mm">Atomic wallet engine (ငွေနှစ်ခါ မနုတ်နိုင်)</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Deposit — last 5 digits verification</span><span lang-content="mm">Deposit — နောက်ဆုံး ၅ လုံး စစ်ဆေးမှု</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Pending → Approve / Reject workflow</span><span lang-content="mm">Pending → အတည်ပြု / ငြင်းဆို</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Withdraw request & approval flow</span><span lang-content="mm">ငွေထုတ် တောင်းဆိုမှု & အတည်ပြုမှု</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Transaction history (all states)</span><span lang-content="mm">ငွေလွှဲမှတ်တမ်း (အခြေအနေအားလုံး)</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Payment method management</span><span lang-content="mm">ငွေပေးနည်း စီမံမှု</span></div>
+        </div>
+        <div class="dg-label"><span lang-content="en">User Web App Screens</span><span lang-content="mm">User Web App Screen များ</span></div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Home — banner carousel + categories</span><span lang-content="mm">Home — Banner + ဂိမ်းအမျိုးအစား</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Balance display (show / hide toggle)</span><span lang-content="mm">ငွေကျန် ပြ / ဝှက် ခလုတ်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Game lobby + provider filter</span><span lang-content="mm">Game lobby + Provider စစ်မှု</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">In-game WebView</span><span lang-content="mm">In-game WebView</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Bet history screen</span><span lang-content="mm">Bet မှတ်တမ်း screen</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Profile + Viber CS deep link</span><span lang-content="mm">Profile + Viber CS deep link</span></div>
+          <div class="d-item"><div class="d-check" style="background:#f59e0b">✓</div><span lang-content="en">Game Provider API (aggregator)</span><span lang-content="mm">Game Provider API ချိတ်ဆက်မှု</span></div>
+        </div>
+        <div class="note-box mt-4">
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <span lang-content="en">⚠ <strong class="text-amber-400">Critical:</strong> All wallet transactions undergo atomic testing before M3 payment is released. A payment bug found before launch = hours to fix. Found after launch = weeks of damage and player trust lost. We do not move to M4 until every transaction is airtight.</span>
+            <span lang-content="mm">⚠ <strong class="text-amber-400">အရေးကြီး:</strong> M3 ငွေမပေးမချင်း Wallet transaction အားလုံးကို Atomic test ပြုလုပ်ပြီးမှ ဖြစ်မည်။ Launch မတိုင်မီ Bug တွေ့ → နာရီပိုင်းဖြင့် ပြင်နိုင်သည်။ Launch ပြီးမှ တွေ့ → ဘောင်မသတ်နိုင်သော ပျက်စီးဆုံးရှုံးမှု ဖြစ်မည်။</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- M4 Panel -->
+    <div class="milestone-panel bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden" id="panel-4">
+      <div class="p-6 border-b border-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="badge bg-emerald-900/40 text-emerald-400 border border-emerald-500/20 mb-2">
+              <span lang-content="en">Milestone 4 · Weeks 19–24</span>
+              <span lang-content="mm">Milestone 4 · ပတ် ၁၉–၂၄</span>
+            </span>
+            <h3 class="text-lg font-bold text-white mt-2">
+              <span lang-content="en">Security, QA & Production Launch</span>
+              <span lang-content="mm">လုံခြုံရေး၊ QA နှင့် Production Launch</span>
+            </h3>
+            <p class="text-sm text-slate-400 mt-2 max-w-xl leading-relaxed">
+              <span lang-content="en">Full security audit, load testing, UAT sign-off, go-live, and 3 weeks post-launch monitoring — all included. You receive every credential and document at handover.</span>
+              <span lang-content="mm">Security audit အပြည့်၊ Load testing၊ UAT၊ Go-live နှင့် Launch ပြီးနောက် ၃ ပတ် monitoring — အားလုံး ပါဝင်သည်။ Credential နှင့် Document အားလုံး လွှဲပြောင်းပေးမည်။</span>
+            </p>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="text-2xl font-extrabold text-emerald-400">
+              <span lang-content="en">170 Lakhs</span>
+              <span lang-content="mm">၁၇၀ သိန်း</span>
+            </div>
+            <div class="text-xs text-slate-500 mt-1">25%</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="dg-label"><span lang-content="en">Security & QA</span><span lang-content="mm">လုံခြုံရေး & QA</span></div>
+        <div class="deliverable-grid">
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">Full security audit report</span><span lang-content="mm">Security audit အစီရင်ခံစာ</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">Rate limiting on all endpoints</span><span lang-content="mm">Endpoint အားလုံးတွင် Rate limiting</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">XSS / SQL injection hardening</span><span lang-content="mm">XSS / SQLi ကာကွယ်မှု</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">Load testing — concurrent users</span><span lang-content="mm">Load testing — User တပြိုင်နက် စစ်ဆေး</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">UAT sign-off with client</span><span lang-content="mm">Client နှင့် UAT အတည်ပြုမှု</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">Banner & notice management</span><span lang-content="mm">Banner & ကြေညာ စီမံမှု</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">P/L monthly reports</span><span lang-content="mm">လစဉ် P/L အစီရင်ခံ</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">Production deploy</span><span lang-content="mm">Production deploy ပြုလုပ်မည်</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">3-week post-launch monitoring</span><span lang-content="mm">Launch ပြီး ၃ ပတ် monitoring</span></div>
+          <div class="d-item"><div class="d-check" style="background:#10b981">✓</div><span lang-content="en">Critical bug fix (24h SLA)</span><span lang-content="mm">Critical bug ၂၄ နာရီအတွင်း ဖြေရှင်းမည်</span></div>
+        </div>
+        <div class="note-box mt-4">
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <span lang-content="en">⚡ <strong class="text-amber-400">What you receive at final handover:</strong> Full source code (private GitHub repo) · Swagger API docs + Postman Collection · System architecture diagram · Server maintenance guide · QA report · All credentials transferred to your accounts.</span>
+            <span lang-content="mm">⚡ <strong class="text-amber-400">နောက်ဆုံး လွှဲပြောင်းမှုတွင် ရရှိမည်:</strong> Source code အပြည့် (Private GitHub) · Swagger API docs + Postman · System architecture diagram · Server maintenance guide · QA report · Account credential အားလုံး Client ထံ လွှဲပြောင်းမည်။</span>
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- TIMELINE VISUAL -->
-  <section id="timeline">
+  <!-- PAYMENT SCHEDULE -->
+  <section id="payment">
     <div class="flex items-center gap-3 mb-8">
       <div class="section-bar bg-indigo-500"></div>
-      <h2 class="text-2xl font-bold text-white">
-        <span lang-content="en">Project Timeline — 24 Weeks</span>
-        <span lang-content="mm">ပရောဂျက် အချိန်ဇယား — ၂၄ ပတ်</span>
-      </h2>
+      <div>
+        <h2 class="text-2xl font-bold text-white">
+          <span lang-content="en">Payment Schedule</span>
+          <span lang-content="mm">ငွေပေးချေမှု အစီအစဉ်</span>
+        </h2>
+        <p class="text-xs text-slate-500 mt-1">
+          <span lang-content="en">You only pay when each milestone is verified and demonstrated live</span>
+          <span lang-content="mm">Milestone တစ်ခုချင်း စစ်ဆေး အတည်ပြုပြီးမှသာ ငွေပေးချေရမည်</span>
+        </p>
+      </div>
     </div>
 
-    <div class="relative pl-10">
-      <div class="timeline-line"></div>
-
-      <!-- Item -->
-      <div class="relative mb-8 flex items-start gap-4">
-        <div class="timeline-dot bg-teal-400 mt-1" style="margin-left:-22px;"></div>
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 p-5 flex-1">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-teal-400">
-              <span lang-content="en">Weeks 1–5 · Foundation</span>
-              <span lang-content="mm">ပတ် ၁–၅ · Foundation</span>
-            </span>
-            <span class="badge bg-teal-900/30 text-teal-400 border border-teal-800">M1 · 20%</span>
+    <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6 mb-4">
+      <div class="pay-timeline">
+        <div class="pay-item">
+          <div class="pay-inner">
+            <div class="pay-circle" style="background:rgba(20,184,166,0.12);border-color:rgba(20,184,166,0.4);color:#14b8a6">20%</div>
+            <div class="pay-amount text-teal-400">
+              <span lang-content="en">150 Lakhs</span><span lang-content="mm">၁၅၀ သိန်း</span>
+            </div>
+            <div class="pay-label">
+              <span lang-content="en">Foundation</span><span lang-content="mm">အခြေခံ</span>
+            </div>
+            <div class="pay-when">
+              <span lang-content="en">Upfront to start</span><span lang-content="mm">စတင်ရန် ကြိုပေး</span>
+            </div>
           </div>
-          <p class="text-sm text-slate-400">
-            <span lang-content="en">Database schema, auth API, role system, CI/CD, cloud server setup. Login/Register + OTP screens completed.</span>
-            <span lang-content="mm">Database schema၊ Auth API၊ Role system၊ CI/CD၊ Cloud server တပ်ဆင်မှု။ Login/Register + OTP screen ပြီးမည်။</span>
-          </p>
+        </div>
+        <div class="pay-item">
+          <div class="pay-inner">
+            <div class="pay-circle" style="background:rgba(129,140,248,0.12);border-color:rgba(129,140,248,0.4);color:#818cf8">25%</div>
+            <div class="pay-amount text-indigo-400">
+              <span lang-content="en">170 Lakhs</span><span lang-content="mm">၁၇၀ သိန်း</span>
+            </div>
+            <div class="pay-label">
+              <span lang-content="en">Admin & Agent</span><span lang-content="mm">Admin & Agent</span>
+            </div>
+            <div class="pay-when">
+              <span lang-content="en">On verified delivery</span><span lang-content="mm">ပြည့်စုံပြီးမှ</span>
+            </div>
+          </div>
+        </div>
+        <div class="pay-item">
+          <div class="pay-inner">
+            <div class="pay-circle" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.4);color:#f59e0b">30%</div>
+            <div class="pay-amount text-amber-400">
+              <span lang-content="en">210 Lakhs</span><span lang-content="mm">၂၁၀ သိန်း</span>
+            </div>
+            <div class="pay-label">
+              <span lang-content="en">Payment & Games</span><span lang-content="mm">ငွေပေးချေ & ဂိမ်း</span>
+            </div>
+            <div class="pay-when">
+              <span lang-content="en">After atomic testing</span><span lang-content="mm">Atomic test ပြီးမှ</span>
+            </div>
+          </div>
+        </div>
+        <div class="pay-item">
+          <div class="pay-inner">
+            <div class="pay-circle" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.4);color:#10b981">25%</div>
+            <div class="pay-amount text-emerald-400">
+              <span lang-content="en">170 Lakhs</span><span lang-content="mm">၁၇၀ သိန်း</span>
+            </div>
+            <div class="pay-label">
+              <span lang-content="en">Launch & QA</span><span lang-content="mm">Launch & QA</span>
+            </div>
+            <div class="pay-when">
+              <span lang-content="en">On go-live</span><span lang-content="mm">Go-live ဖြစ်မှ</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="relative mb-8 flex items-start gap-4">
-        <div class="timeline-dot bg-indigo-400 mt-1" style="margin-left:-22px;"></div>
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 p-5 flex-1">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-indigo-400">
-              <span lang-content="en">Weeks 6–11 · Admin + Agent Panel</span>
-              <span lang-content="mm">ပတ် ၆–၁၁ · Admin + Agent Panel</span>
-            </span>
-            <span class="badge bg-indigo-900/30 text-indigo-400 border border-indigo-800">M2 · 25%</span>
-          </div>
-          <p class="text-sm text-slate-400">
-            <span lang-content="en">Full admin panel, agent management, user CRUD, commission engine, win/loss reports. Both panels demo-ready.</span>
-            <span lang-content="mm">Admin panel အပြည့်၊ Agent စီမံမှု၊ User CRUD၊ Commission တွက်ချက်မှု၊ Win/Loss report။ Panel နှစ်ခုလုံး Demo ပြနိုင်သည့်အဆင့်ရောက်မည်။</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="relative mb-8 flex items-start gap-4">
-        <div class="timeline-dot bg-amber-400 mt-1" style="margin-left:-22px;"></div>
-        <div class="bg-slate-900 rounded-2xl border border-amber-800/40 p-5 flex-1">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-amber-400">
-              <span lang-content="en">Weeks 12–18 · Payment + User App + Games</span>
-              <span lang-content="mm">ပတ် ၁၂–၁၈ · Payment + User App + ဂိမ်း</span>
-            </span>
-            <span class="badge bg-amber-900/30 text-amber-400 border border-amber-800">M3 · 30% ⚠</span>
-          </div>
-          <p class="text-sm text-slate-400">
-            <span lang-content="en">Most critical phase. Wallet engine, custom deposit (last 5 digits), withdrawal, game lobby, in-game WebView, bet history. Full user journey working.</span>
-            <span lang-content="mm">အရေးကြီးဆုံး Phase။ Wallet engine၊ Custom deposit (နောက်ဆုံး ၅ လုံး စစ်)၊ ငွေထုတ်၊ Game lobby၊ In-game WebView၊ Bet history။ User journey တစ်ခုလုံး အလုပ်လုပ်မည်။</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="relative mb-8 flex items-start gap-4">
-        <div class="timeline-dot bg-emerald-400 mt-1" style="margin-left:-22px;"></div>
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 p-5 flex-1">
-          <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-emerald-400">
-              <span lang-content="en">Weeks 19–24 · Security, QA & Launch</span>
-              <span lang-content="mm">ပတ် ၁၉–၂၄ · Security, QA & Launch</span>
-            </span>
-            <span class="badge bg-emerald-900/30 text-emerald-400 border border-emerald-800">M4 · 25%</span>
-          </div>
-          <p class="text-sm text-slate-400">
-            <span lang-content="en">Security audit, load testing, UAT, banner/notice management, go-live, and 3-week post-launch monitoring window.</span>
-            <span lang-content="mm">Security audit၊ Load testing၊ UAT၊ Banner/Notice စီမံ၊ Go-live နှင့် Launch ပြီးနောက် ၃ ပတ် monitoring window။</span>
-          </p>
-        </div>
-      </div>
-
+    <div class="note-box">
+      <p class="text-xs text-slate-400 leading-relaxed">
+        <span lang-content="en">⚠ <strong class="text-amber-400">How it works:</strong> You never pay for the next phase until the current one is demonstrated and accepted in a live demo. If anything isn't right, it is fixed before any payment changes hands.</span>
+        <span lang-content="mm">⚠ <strong class="text-amber-400">ငွေပေးချေနည်း:</strong> နောက် Phase ကို လက်ရှိ Phase Live demo ပြပြီး လက်ခံမှသာ ငွေပေးချေရမည်။ မပြည့်မီသည့် အချက်တစ်ခုမဆို ပြင်ဆင်ပြီးမှ ငွေပေးချေခြင်း ဖြစ်မည်။</span>
+      </p>
     </div>
   </section>
 
@@ -592,24 +668,22 @@
           <span lang-content="mm">လစဉ် Cloud Server ကုန်ကျစရိတ် ခန့်မှန်းချက်</span>
         </h2>
         <p class="text-xs text-slate-500 mt-1">
-          <span lang-content="en">Client pays infrastructure costs directly. Estimates by concurrent user volume.</span>
-          <span lang-content="mm">Client ဘက်မှ Infrastructure ကုန်ကျစရိတ် တိုက်ရိုက်ကျခံရမည်။ User ပမာဏအလိုက် ခန့်မှန်းချက်။</span>
+          <span lang-content="en">Client pays directly. Scales with concurrent user volume.</span>
+          <span lang-content="mm">Client ဘက်မှ တိုက်ရိုက်ကျခံရမည်။ User ပမာဏအလိုက် ရွေးချယ်နိုင်သည်။</span>
         </p>
       </div>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6 mt-8">
-
       <div class="infra-card bg-slate-900/60 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
         <div>
           <div class="text-xs font-semibold text-teal-400 border border-slate-700 bg-slate-900 px-3 py-1 rounded-md inline-block mb-4">
-            <span lang-content="en">Tier 1 — Start Launch</span>
-            <span lang-content="mm">အဆင့် ၁ — Start Launch</span>
+            <span lang-content="en">Tier 1 — Start Launch</span><span lang-content="mm">အဆင့် ၁ — Start</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">100 – 500 Users</h3>
           <p class="text-slate-400 text-sm leading-relaxed mb-4">
             <span lang-content="en">Entry-level setup for initial launch. Cost-efficient with essential reliability.</span>
-            <span lang-content="mm">စတင်မိတ်ဆက်ချိန် user ပမာဏအတွက် အသက်သာဆုံး setup။</span>
+            <span lang-content="mm">စတင်မိတ်ဆက်ချိန်အတွက် အသက်သာဆုံး setup။</span>
           </p>
           <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-4">
             <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>App Server (8GB RAM, 4 vCPUs)</li>
@@ -626,23 +700,21 @@
 
       <div class="infra-card bg-slate-900/60 border border-teal-500/40 rounded-2xl p-6 flex flex-col justify-between relative shadow-lg shadow-teal-500/5">
         <div class="absolute -top-3 right-5 bg-teal-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full">
-          <span lang-content="en">Growth State</span>
-          <span lang-content="mm">ကြီးထွားမှု</span>
+          <span lang-content="en">Growth Stage</span><span lang-content="mm">ကြီးထွားမှု</span>
         </div>
         <div>
           <div class="text-xs font-semibold text-teal-400 border border-slate-700 bg-slate-900 px-3 py-1 rounded-md inline-block mb-4">
-            <span lang-content="en">Tier 2 — Medium Traffic</span>
-            <span lang-content="mm">အဆင့် ၂ — Medium Traffic</span>
+            <span lang-content="en">Tier 2 — Medium Traffic</span><span lang-content="mm">အဆင့် ၂ — Medium</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">1,000 – 3,000 Users</h3>
           <p class="text-slate-400 text-sm leading-relaxed mb-4">
-            <span lang-content="en">Growing traffic with higher throughput requirements. Multi-node or upgraded specs.</span>
-            <span lang-content="mm">ကစားသမား ပိုများလာသည့် အဆင့်။ Data ဖတ်/ရေးနှုန်း ပိုမြင့်လာမည်။</span>
+            <span lang-content="en">Growing traffic with higher throughput. Multi-node or upgraded specs.</span>
+            <span lang-content="mm">ကစားသမား ပိုများလာသည့် အဆင့်။ Throughput မြင့်မားလာမည်။</span>
           </p>
           <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-4">
             <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>
               <span lang-content="en">App Servers — upgraded or multi-node</span>
-              <span lang-content="mm">App Servers — Specs မြင့် သို့ Multi-nodes</span>
+              <span lang-content="mm">App Servers — Specs မြင့် / Multi-node</span>
             </li>
             <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>MongoDB M20 Dedicated Tier</li>
             <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>High Performance Redis</li>
@@ -658,13 +730,12 @@
       <div class="infra-card bg-slate-900/60 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
         <div>
           <div class="text-xs font-semibold text-teal-400 border border-slate-700 bg-slate-900 px-3 py-1 rounded-md inline-block mb-4">
-            <span lang-content="en">Tier 3 — Enterprise Scale</span>
-            <span lang-content="mm">အဆင့် ၃ — Enterprise Scale</span>
+            <span lang-content="en">Tier 3 — Enterprise Scale</span><span lang-content="mm">အဆင့် ၃ — Enterprise</span>
           </div>
           <h3 class="text-xl font-bold text-white mb-2">5,000 – 10,000+ Users</h3>
           <p class="text-slate-400 text-sm leading-relaxed mb-4">
             <span lang-content="en">Auto-scaling system. Thousands of bets per second without latency.</span>
-            <span lang-content="mm">Auto-scaling system။ ကစားသမား ထောင်ချီ၏ bet တွေကို delay မရှိဘဲ ဆောင်ရွက်နိုင်မည်။</span>
+            <span lang-content="mm">Auto-scaling system။ ကစားသမား ထောင်ချီကို Delay မရှိဘဲ ဆောင်ရွက်နိုင်မည်။</span>
           </p>
           <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-4">
             <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>AWS Auto-scaling Nodes</li>
@@ -681,7 +752,6 @@
           <div class="text-xs text-emerald-400 mt-1">~ 36,000 – 58,000 THB</div>
         </div>
       </div>
-
     </div>
 
     <div class="note-box mt-8">
@@ -694,10 +764,10 @@
         <li class="flex items-start gap-2" lang-content="mm"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Infrastructure ကုန်ကျစရိတ်ကို Client ကိုယ်တိုင် တိုက်ရိုက် ကတ်ဖြင့် ကျခံရမည်။</li>
         <li class="flex items-start gap-2" lang-content="en"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Development timeline: 24 weeks (≈ 6 months) from contract signing date.</li>
         <li class="flex items-start gap-2" lang-content="mm"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Development timeline: စာချုပ်ချုပ်ဆိုသည့်နေ့မှ ၂၄ ပတ် (၆ လ ခန့်)။</li>
-        <li class="flex items-start gap-2" lang-content="en"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider API deposit/contract fees are NOT included in this proposal and must be arranged by the client independently.</li>
-        <li class="flex items-start gap-2" lang-content="mm"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider ထံ ပေးဆောင်ရမည့် ကနဦး Deposit/Contract ကုန်ကျစရိတ်သည် ဤ Proposal တွင် မပါဝင်ပါ။ Client ဘက်မှ သီးခြား စီစဉ်ရမည်ဖြစ်သည်။</li>
-        <li class="flex items-start gap-2" lang-content="en"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider API sandbox access must be requested by client at project start — delays here directly delay Milestone 3.</li>
-        <li class="flex items-start gap-2" lang-content="mm"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider Sandbox API access ကို Project စတင်ချိန်မှာပဲ Client ဘက်မှ တောင်းဆိုထားရမည်။ နောက်ကျပါက Milestone 3 ကိုတိုက်ရိုက် ထိခိုက်မည်။</li>
+        <li class="flex items-start gap-2" lang-content="en"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider API deposit/contract fees are NOT included and must be arranged by the client independently.</li>
+        <li class="flex items-start gap-2" lang-content="mm"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider ထံ ပေးဆောင်ရမည့် ကနဦး Deposit/Contract ကုန်ကျစရိတ်သည် ဤ Proposal တွင် မပါဝင်ပါ။</li>
+        <li class="flex items-start gap-2" lang-content="en"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider sandbox API access must be requested at project start — delays directly delay Milestone 3.</li>
+        <li class="flex items-start gap-2" lang-content="mm"><span class="text-amber-400 mt-0.5 text-xs">▸</span>Game Provider Sandbox API access ကို Project စတင်ချိန်မှာပဲ တောင်းဆိုထားရမည်။ နောက်ကျပါက Milestone 3 ကို တိုက်ရိုက် ထိခိုက်မည်။</li>
       </ul>
     </div>
   </section>
@@ -707,70 +777,89 @@
     <div class="flex items-center gap-3 mb-8">
       <div class="section-bar bg-amber-500"></div>
       <h2 class="text-2xl font-bold text-white">
-        <span lang-content="en">Deliverables & Handover Standards</span>
-        <span lang-content="mm">အပ်နှံမှု & လွှဲပြောင်းရေး စံနှုန်းများ</span>
+        <span lang-content="en">What You Own After Handover</span>
+        <span lang-content="mm">Handover ပြီးနောက် သင်ပိုင်ဆိုင်မည့် အရာများ</span>
       </h2>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-teal-900/50 border border-teal-500/20 flex items-center justify-center text-teal-400 text-xs font-bold">01</div>
-          <h3 class="font-bold text-teal-400">
-            <span lang-content="en">Technical API Documentation</span>
+    <div class="handover-grid">
+      <div class="handover-item">
+        <div class="handover-num" style="background:rgba(20,184,166,0.12);color:#14b8a6">01</div>
+        <div>
+          <div class="handover-title" style="color:#14b8a6">
+            <span lang-content="en">Full Source Code</span>
+            <span lang-content="mm">Source Code အပြည့်</span>
+          </div>
+          <div class="handover-desc">
+            <span lang-content="en">Private GitHub repo. You own it permanently — no monthly dev licenses, no lock-in.</span>
+            <span lang-content="mm">Private GitHub repo အနေနဲ့ လွှဲပြောင်းမည်။ လစဉ် Dev license မဟုတ်ဘဲ အမြဲတမ်း ပိုင်ဆိုင်မည်။</span>
+          </div>
+        </div>
+      </div>
+      <div class="handover-item">
+        <div class="handover-num" style="background:rgba(129,140,248,0.12);color:#818cf8">02</div>
+        <div>
+          <div class="handover-title" style="color:#818cf8">
+            <span lang-content="en">API Documentation</span>
             <span lang-content="mm">API မှတ်တမ်း</span>
-          </h3>
+          </div>
+          <div class="handover-desc">
+            <span lang-content="en">Swagger UI + Postman Collection — every endpoint, auth flow, request/response, error codes.</span>
+            <span lang-content="mm">Swagger UI + Postman Collection — Endpoint အားလုံး၊ Auth flow၊ Request/Response ပုံစံ နှင့် Error code များ။</span>
+          </div>
         </div>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          <span lang-content="en">Full Swagger UI + Postman Collection covering all endpoints, auth flows, request/response schemas, and error codes.</span>
-          <span lang-content="mm">Swagger UI + Postman Collection ဖြင့် Endpoint အားလုံး၊ Auth flow၊ Request/Response ပုံစံ နှင့် Error code များ ပြည့်စုံစွာ ပေးအပ်မည်။</span>
-        </p>
       </div>
-
-      <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-indigo-900/50 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xs font-bold">02</div>
-          <h3 class="font-bold text-indigo-400">
+      <div class="handover-item">
+        <div class="handover-num" style="background:rgba(245,158,11,0.12);color:#f59e0b">03</div>
+        <div>
+          <div class="handover-title" style="color:#f59e0b">
             <span lang-content="en">System Architecture Diagram</span>
-            <span lang-content="mm">စနစ် ဗိသုကာ ပုံကြမ်း</span>
-          </h3>
+            <span lang-content="mm">System Architecture ပုံကြမ်း</span>
+          </div>
+          <div class="handover-desc">
+            <span lang-content="en">Frontend, Backend, DB, Redis — data flow, service boundaries, network topology. For your future in-house team.</span>
+            <span lang-content="mm">Frontend, Backend, DB, Redis ချိတ်ဆက်ပုံ၊ Data flow၊ Network topology — နောင် In-house team အတွက်ပါ ရည်ရွယ်မည်။</span>
+          </div>
         </div>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          <span lang-content="en">Visual diagram of Frontend, Backend, DB, and Redis Cache interconnections — data flow, service boundaries, network topology.</span>
-          <span lang-content="mm">Frontend, Backend, DB နှင့် Redis Cache ချိတ်ဆက်ပုံ၊ Data flow၊ Service boundaries နှင့် Network topology ပုံဆွဲပြမည်။</span>
-        </p>
       </div>
-
-      <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-emerald-900/50 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">03</div>
-          <h3 class="font-bold text-emerald-400">
+      <div class="handover-item">
+        <div class="handover-num" style="background:rgba(16,185,129,0.12);color:#10b981">04</div>
+        <div>
+          <div class="handover-title" style="color:#10b981">
             <span lang-content="en">Server & Maintenance Guide</span>
-            <span lang-content="mm">ဆာဗာ ထိန်းသိမ်းမှု လမ်းညွှန်</span>
-          </h3>
+            <span lang-content="mm">Server ထိန်းသိမ်းမှု လမ်းညွှန်</span>
+          </div>
+          <div class="handover-desc">
+            <span lang-content="en">Docker container management, database backup schedules, restore procedures, firewall rules and security checklist.</span>
+            <span lang-content="mm">Docker container စီမံနည်း၊ Database backup အချိန်ဇယား၊ Restore နည်း၊ Firewall rules နှင့် Security checklist။</span>
+          </div>
         </div>
-        <ul class="text-sm text-slate-400 space-y-1">
-          <li class="flex items-start gap-2" lang-content="en"><span class="text-emerald-400 text-xs mt-0.5">▸</span>Docker container management & scaling</li>
-          <li class="flex items-start gap-2" lang-content="mm"><span class="text-emerald-400 text-xs mt-0.5">▸</span>Docker Container စီမံနည်း & တိုးချဲ့နည်း</li>
-          <li class="flex items-start gap-2" lang-content="en"><span class="text-emerald-400 text-xs mt-0.5">▸</span>Database backup schedules & restore procedures</li>
-          <li class="flex items-start gap-2" lang-content="mm"><span class="text-emerald-400 text-xs mt-0.5">▸</span>Database Backup အချိန်ဇယား & Restore နည်း</li>
-          <li class="flex items-start gap-2" lang-content="en"><span class="text-emerald-400 text-xs mt-0.5">▸</span>Firewall rules & security hardening checklist</li>
-          <li class="flex items-start gap-2" lang-content="mm"><span class="text-emerald-400 text-xs mt-0.5">▸</span>Firewall Setting & Security hardening checklist</li>
-        </ul>
       </div>
-
-      <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-amber-900/50 border border-amber-500/20 flex items-center justify-center text-amber-400 text-xs font-bold">04</div>
-          <h3 class="font-bold text-amber-400">
-            <span lang-content="en">Quality Assurance Report</span>
-            <span lang-content="mm">QA အစီရင်ခံစာ</span>
-          </h3>
+      <div class="handover-item">
+        <div class="handover-num" style="background:rgba(244,63,94,0.12);color:#f43f5e">05</div>
+        <div>
+          <div class="handover-title" style="color:#f43f5e">
+            <span lang-content="en">QA & Security Report</span>
+            <span lang-content="mm">QA & Security အစီရင်ခံစာ</span>
+          </div>
+          <div class="handover-desc">
+            <span lang-content="en">Pre-launch load test results, security audit findings, all bug resolutions, and wallet transaction audit logs.</span>
+            <span lang-content="mm">Launch မတိုင်မီ Load test ရလဒ်၊ Security findings၊ Bug ဖြေရှင်းမှုများ နှင့် Wallet transaction audit log များ။</span>
+          </div>
         </div>
-        <p class="text-sm text-slate-400 leading-relaxed">
-          <span lang-content="en">Pre-launch report covering load test results, security findings, all bug resolutions, and wallet transaction audit before handover.</span>
-          <span lang-content="mm">Launch မတိုင်မီ Load test ရလဒ်၊ Security findings၊ Bug ပြင်ဆင်မှုများ နှင့် Wallet transaction audit အားလုံးပါဝင်သော အစီရင်ခံစာ ပေးအပ်မည်။</span>
-        </p>
+      </div>
+      <div class="handover-item">
+        <div class="handover-num" style="background:rgba(20,184,166,0.12);color:#14b8a6">06</div>
+        <div>
+          <div class="handover-title" style="color:#14b8a6">
+            <span lang-content="en">All Credentials Transferred</span>
+            <span lang-content="mm">Credential အားလုံး လွှဲပြောင်းမည်</span>
+          </div>
+          <div class="handover-desc">
+            <span lang-content="en">Every server, database, CI/CD, and cloud account transferred to your ownership. Nothing held by the dev team.</span>
+            <span lang-content="mm">Server, Database, CI/CD, Cloud account အားလုံး Client ထံ လွှဲပြောင်းမည်။ Dev team ထံ ဘာမှ ကျန်မည် မဟုတ်ပါ။</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -782,7 +871,7 @@
         </h4>
         <p class="text-sm text-slate-400">
           <span lang-content="en">Uptime monitoring, critical bug fixes, and priority incident response in the first 3 weeks after go-live — included in Milestone 4.</span>
-          <span lang-content="mm">Go-live ပြီးနောက် ၃ ပတ်တွင် Uptime monitoring၊ Critical bug fixes နှင့် ဦးစားပေး incident response — Milestone 4 တွင် ပါဝင်သည်။</span>
+          <span lang-content="mm">Go-live ပြီးနောက် ၃ ပတ်တွင် Uptime monitoring၊ Critical bug fix နှင့် ဦးစားပေး incident response — Milestone 4 တွင် ပါဝင်သည်။</span>
         </p>
       </div>
       <div class="badge bg-teal-900/40 text-teal-400 border border-teal-500/30 whitespace-nowrap text-xs flex-shrink-0">
@@ -805,6 +894,28 @@
     document.body.classList.toggle('lang-mm', lang === 'mm');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-mm').classList.toggle('active', lang === 'mm');
+  }
+
+  const tabColors = {
+    1: '#14b8a6',
+    2: '#818cf8',
+    3: '#f59e0b',
+    4: '#10b981',
+  };
+
+  function showTab(n, btn) {
+    document.querySelectorAll('.milestone-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + n).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+    });
+    btn.classList.add('active');
+    btn.style.background = tabColors[n];
+    btn.style.color = '#0a0f1a';
+    btn.style.borderColor = tabColors[n];
   }
 </script>
 </body>
