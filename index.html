@@ -155,7 +155,8 @@
     <div class="flex flex-wrap justify-center gap-2 pt-1">
       <span class="tech-tag">NestJS</span>
       <span class="tech-tag">Next.js</span>
-      <span class="tech-tag">MongoDB</span>
+      <span class="tech-tag">PostgreSQL</span>
+      <span class="tech-tag">TypeORM</span>
       <span class="tech-tag">Redis</span>
       <span class="tech-tag">Custom Wallet</span>
       <span class="tech-tag">Docker</span>
@@ -385,7 +386,7 @@
         <div class="dg-label"><span lang-content="en">Backend & Infrastructure</span><span lang-content="mm">Backend & Infrastructure</span></div>
         <div class="deliverable-grid">
           <div class="d-item"><div class="d-check">✓</div><span lang-content="en">NestJS API scaffolded & live</span><span lang-content="mm">NestJS API စတင်ပြင်ဆင်မည်</span></div>
-          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">MongoDB schema — all collections</span><span lang-content="mm">MongoDB schema — Collection အားလုံး</span></div>
+          <div class="d-item"><div class="d-check">✓</div><span lang-content="en">PostgreSQL schema — all tables (TypeORM)</span><span lang-content="mm">PostgreSQL schema — Table အားလုံး (TypeORM)</span></div>
           <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Redis cache layer configured</span><span lang-content="mm">Redis cache layer ပြင်ဆင်မည်</span></div>
           <div class="d-item"><div class="d-check">✓</div><span lang-content="en">JWT auth + refresh token</span><span lang-content="mm">JWT auth + refresh token</span></div>
           <div class="d-item"><div class="d-check">✓</div><span lang-content="en">Role guard (Admin / Agent / User)</span><span lang-content="mm">Role guard (Admin / Agent / User)</span></div>
@@ -402,8 +403,8 @@
         </div>
         <div class="note-box mt-4">
           <p class="text-xs text-slate-400 leading-relaxed">
-            <span lang-content="en">⚡ <strong class="text-amber-400">What you verify at M1:</strong> Log in as Admin, Agent, and User from any browser. Database visible in MongoDB Atlas. CI/CD auto-deploys on every git push. All schemas finalized — no surprise columns later.</span>
-            <span lang-content="mm">⚡ <strong class="text-amber-400">M1 တွင် စစ်ဆေးနိုင်သည်:</strong> Browser မှ Admin, Agent, User အဖြစ် Login ဝင်နိုင်မည်။ MongoDB Atlas တွင် Database မြင်ရမည်။ CI/CD သည် git push တိုင်း auto-deploy ဖြစ်မည်။ Schema များ ပြီးဆုံးပြီ — နောက်မှ ထပ်ထည့်မည် မဟုတ်ပါ။</span>
+            <span lang-content="en">⚡ <strong class="text-amber-400">What you verify at M1:</strong> Log in as Admin, Agent, and User from any browser. Database visible in the managed PostgreSQL dashboard. CI/CD auto-deploys on every git push. All schemas finalized — no surprise columns later.</span>
+            <span lang-content="mm">⚡ <strong class="text-amber-400">M1 တွင် စစ်ဆေးနိုင်သည်:</strong> Browser မှ Admin, Agent, User အဖြစ် Login ဝင်နိုင်မည်။ Managed PostgreSQL dashboard တွင် Database မြင်ရမည်။ CI/CD သည် git push တိုင်း auto-deploy ဖြစ်မည်။ Schema များ ပြီးဆုံးပြီ — နောက်မှ ထပ်ထည့်မည် မဟုတ်ပါ။</span>
           </p>
         </div>
       </div>
@@ -686,15 +687,21 @@
             <span lang-content="mm">စတင်မိတ်ဆက်ချိန်အတွက် အသက်သာဆုံး setup။</span>
           </p>
           <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-4">
-            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>App Server (8GB RAM, 4 vCPUs)</li>
-            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>MongoDB Shared / Dedicated Cluster</li>
-            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>Redis Managed Cache (1–2 GB)</li>
-            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>Cloudflare Pro — basic DDoS</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>App Server — 2 vCPU / 4GB RAM Droplet</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>PostgreSQL Managed Database (single-node, 1GB)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>Redis/Valkey Managed Cache (1GB)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400">▸</span>Cloudflare Free — CDN + DDoS protection</li>
           </ul>
         </div>
         <div class="border-t border-slate-800 pt-4 mt-6">
-          <div class="text-2xl font-bold text-white">$200 <span class="text-slate-400 text-sm font-normal">– $350 / mo</span></div>
-          <div class="text-xs text-emerald-400 mt-1">~ 7,500 – 12,000 THB</div>
+          <div class="text-xs text-slate-500 mb-1">
+            <span lang-content="en">Infra (paid to cloud provider)</span><span lang-content="mm">Infra (Cloud provider ထံ ပေးရမည်)</span>: $50 – $65 / mo
+          </div>
+          <div class="text-xs text-slate-500 mb-3">
+            <span lang-content="en">+ Service & monitoring fee</span><span lang-content="mm">+ ဝန်ဆောင်ခ (Server စောင့်ကြည့်ခြင်း)</span>: $150 / mo
+          </div>
+          <div class="text-2xl font-bold text-white">$200 <span class="text-slate-400 text-sm font-normal">– $215 / mo</span></div>
+          <div class="text-xs text-emerald-400 mt-1">~ 6,500 – 7,000 THB</div>
         </div>
       </div>
 
@@ -713,17 +720,23 @@
           </p>
           <ul class="text-xs text-slate-300 space-y-2 border-t border-slate-800 pt-4">
             <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>
-              <span lang-content="en">App Servers — upgraded or multi-node</span>
-              <span lang-content="mm">App Servers — Specs မြင့် / Multi-node</span>
+              <span lang-content="en">App Servers — 2 nodes + Load Balancer</span>
+              <span lang-content="mm">App Servers — Node ၂ ခု + Load Balancer</span>
             </li>
-            <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>MongoDB M20 Dedicated Tier</li>
-            <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>High Performance Redis</li>
-            <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>Cloudflare Advanced WAF</li>
+            <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>PostgreSQL HA Cluster (Primary + Standby, 2GB)</li>
+            <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>Redis/Valkey HA Cache</li>
+            <li class="flex items-start gap-2"><span class="text-teal-400">▸</span>Cloudflare Pro — WAF + DDoS</li>
           </ul>
         </div>
         <div class="border-t border-slate-800 pt-4 mt-6">
-          <div class="text-2xl font-bold text-white">$450 <span class="text-slate-400 text-sm font-normal">– $700 / mo</span></div>
-          <div class="text-xs text-emerald-400 mt-1">~ 16,500 – 25,500 THB</div>
+          <div class="text-xs text-slate-500 mb-1">
+            <span lang-content="en">Infra (paid to cloud provider)</span><span lang-content="mm">Infra (Cloud provider ထံ ပေးရမည်)</span>: $170 – $200 / mo
+          </div>
+          <div class="text-xs text-slate-500 mb-3">
+            <span lang-content="en">+ Service & monitoring fee</span><span lang-content="mm">+ ဝန်ဆောင်ခ (Server စောင့်ကြည့်ခြင်း)</span>: $150 / mo
+          </div>
+          <div class="text-2xl font-bold text-white">$320 <span class="text-slate-400 text-sm font-normal">– $350 / mo</span></div>
+          <div class="text-xs text-emerald-400 mt-1">~ 10,400 – 11,400 THB</div>
         </div>
       </div>
 
